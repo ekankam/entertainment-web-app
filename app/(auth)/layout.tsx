@@ -3,7 +3,7 @@ import Image from "next/image";
 
 function AuthLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <section className="min-h-screen w-full bg-brand-dark-blue flex flex-col items-center max-w-screen-2xl mx-auto text-white">
+    <section className="min-h-screen w-full bg-brand-dark-blue flex flex-col items-center mx-auto text-white">
       <Image
         src="/assets/logo.svg"
         alt="logo"
