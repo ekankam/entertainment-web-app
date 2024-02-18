@@ -10,5 +10,10 @@ interface User {
   createdAt: Date;
 }
 
+interface Credentials {
+  email: string;
+  password: string;
+}
+
 export { APP_ROUTES };
-export { type User };
+export { type User, type Credentials };

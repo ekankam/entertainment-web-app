@@ -2,19 +2,16 @@ import * as bcrypt from "bcrypt";
 import { prismaClient } from "@/lib/prisma-client";
 import { User } from "@/types";
 
-const hashPassword = async (password: string): Promise<string> => {
+const hashPassword = async (password: string) => {
   const saltRounds = 10;
   return bcrypt.hash(password, saltRounds);
 };
 
-const verifyPassword = async (
-  password: string,
-  hashedPassword: string
-): Promise<boolean> => {
+const verifyPassword = async (password: string, hashedPassword: string) => {
   return bcrypt.compare(password, hashedPassword);
 };
 
-const findUserByEmail = async (email: string): Promise<unknown> => {
+const findUserByEmail = async (email: string) => {
   const user = await prismaClient.user.findUnique({ where: { email } });
   return user;
 };
