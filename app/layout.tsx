@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import QueryProvider from "@/lib/query-client-provider";
 
 const outfit = Outfit({
   subsets: ["latin", "latin-ext"],
@@ -27,7 +28,9 @@ export default function RootLayout({
           type="image/x-icon"
         />
       </head>
-      <body className={outfit.className}>{children}</body>
+      <body className={outfit.className}>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }
