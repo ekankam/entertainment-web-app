@@ -34,8 +34,8 @@ model Item {
 model User {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   profileColor String
-  email        String?  @unique
-  password     String?
+  email        String   @unique
+  password     String
   createdAt    DateTime @default(now())
   item         Item[]
 }
