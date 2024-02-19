@@ -1,6 +1,7 @@
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import { prismaClient } from "@/lib/prisma-client";
-import { User } from "@/types";
+import { API_ENDPOINTS, Credentials, User } from "@/types";
+import axiosInstance from "@/lib/axios";
 
 const hashPassword = async (password: string) => {
   const saltRounds = 10;
@@ -32,10 +33,16 @@ const generateRandomColor = (): string => {
     .padStart(6, "0")}`;
 };
 
+const addUser = async (credentials: Credentials) => {
+  const { data } = await axiosInstance.post(API_ENDPOINTS.SIGN_UP, credentials);
+  return data;
+};
+
 export {
   hashPassword,
   verifyPassword,
   findUserByEmail,
   createUser,
   generateRandomColor,
+  addUser,
 };

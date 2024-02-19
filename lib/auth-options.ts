@@ -1,3 +1,5 @@
+"use server";
+
 import { APP_ROUTES, Credentials } from "@/types";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { NextAuthConfig } from "next-auth";

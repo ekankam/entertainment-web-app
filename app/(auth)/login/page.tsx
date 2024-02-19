@@ -13,6 +13,9 @@ import {
   loginSchema,
   loginValidationSchema,
 } from "@/utils/form-validation-schema";
+import { signIn } from "next-auth/react";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { AuthError } from "next-auth";
 
 function Login() {
   const {
@@ -27,8 +30,34 @@ function Login() {
     },
   });
 
-  const onSubmit: SubmitHandler<loginValidationSchema> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<loginValidationSchema> = async (data) => {
+    const validatedFields = loginSchema.safeParse(data);
+
+    if (!validatedFields.success) {
+      return { errors: "Invalid fields!" };
+    }
+
+    const { email, password } = validatedFields.data;
+
+    try {
+      await signIn("credentials", {
+        email,
+        password,
+        redirectTo: DEFAULT_LOGIN_REDIRECT,
+      });
+    } catch (error) {
+      if (error instanceof AuthError) {
+        switch (error.type) {
+          case "CredentialsSignin":
+            return { error: "Invalid credentials" };
+          default:
+            return { error: "Something went wrong!" };
+        }
+      }
+
+      throw error;
+    }
+  };
 
   return (
     <FormWrapper>
