@@ -13,6 +13,9 @@ import {
   signUpSchema,
   signUpValidationSchema,
 } from "@/utils/form-validation-schema";
+import { useCreateUserMutation } from "@/hooks/api";
+import { useRouter } from "next/navigation";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 function SignUp() {
   const {
@@ -28,8 +31,17 @@ function SignUp() {
     },
   });
 
-  const onSubmit: SubmitHandler<signUpValidationSchema> = (data) =>
-    console.log(data);
+  const { mutate, isPending, isSuccess } = useCreateUserMutation();
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<signUpValidationSchema> = (data) => {
+    const { email, password } = data;
+    mutate({ email, password });
+  };
+
+  if (isSuccess) {
+    router.push(APP_ROUTES.HOME);
+  }
 
   return (
     <FormWrapper>
@@ -59,8 +71,10 @@ function SignUp() {
         <Button
           className="bg-brand-red text-brand-white hover:bg-brand-white hover:text-brand-semi-dark-blue mt-5 mb-4 w-full h-12"
           type="submit"
+          disabled={isPending}
         >
-          Create an account
+          {isPending && <LoadingSpinner />}
+          {isPending ? "Creating your account..." : "Create an account"}
         </Button>
         <p className="text-center text-sm">
           Already have an account?{" "}
